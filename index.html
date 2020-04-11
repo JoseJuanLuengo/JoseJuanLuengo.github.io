@@ -1,1 +1,165 @@
-Hello world!
+<!DOCTYPE html>
+<html>
+<head>
+
+	<script src="http://davidbau.com/encode/seedrandom.js"></script>
+<style>
+	.player_number{
+		font-weight: bold;
+		vertical-align:middle;
+	}
+	.card {
+		width:100px;
+		height=200px;
+	}
+</style>
+<title>Page Title</title>
+</head>
+<body>
+
+<h1>Repartidor de Pocha</h1>
+
+<div>
+	<form id="game_parameters">
+		<label for="game_id">¿Identificador de la partida?</label><br>
+		<input type="text" id="game_id" name="game_id" value="Pochón de la muerte"><br>
+		<label for="number_of_players">¿Cuántos Jugadores?</label><br>
+		<input type="number" id="number_of_players" name="number_of_players" min="1" value="4"><br>
+		<label for="player_number">¿Qué jugador eres?</label><br>
+		<input type="number" id="player_number" name="player_number" min="1" max="player_number" value="1"><br>
+		<label for="number_of_cards">¿Cuantas Cartas?</label><br>
+		<input type="number" id="number_of_cards" name="round" min="1" max="40/player_number" value="1"><br>
+		<input type="button" onclick="shuffleCards()" value="Reparte cartas">
+	</form>
+</div>
+<div id="board">
+</div>
+
+	<script>
+		let number_of_players = 4;
+		let round = 6;
+		let player = 3;
+
+	function shuffleCards()
+	{
+		// Clean previous round
+		clearBoard();
+
+		let game_params = document.getElementById("game_parameters");
+
+		let seed = game_params.elements[0].value;
+		Math.seedrandom( seed );
+		let number_of_players = game_params.elements[1].value;
+		let number_of_cards_per_hand =  game_params.elements[3].value;
+		let player = game_params.elements[2].value - 1;
+		let deck = createDeck();
+		let hands = distributeCards( deck,
+					     number_of_cards_per_hand,
+					     number_of_players );
+		displayHands( hands, player );
+	}
+
+	function createDeck()
+	{
+		let card_number = 0;
+		let card_suit = 0;
+		let deck = [];
+		for ( let i = 1; i <= 40; i++ )
+		{
+			deck.push([ card_suit, card_number ]);
+			if ( i % 10 == 0 )
+			{
+				card_number = 0;
+				card_suit++;
+			}
+			else
+			{
+				card_number++;
+				if ( card_number == 7 )
+				{
+					// Skip 8 and 9
+					card_number = 9;
+				}
+			}
+		}
+		return deck;
+	}
+
+	function distributeCards( deck,
+				  number_of_cards_per_hand,
+				  number_of_players )
+	{
+		let hands = [];
+		let random_card = 0;
+		for ( let player = 0; player < number_of_players; player++ )
+		{
+			let hand = [];
+			for ( let card_number = 0; card_number < number_of_cards_per_hand; card_number++ )
+			{
+				random_card = Math.floor(Math.random()*deck.length);
+				hand[ card_number ] = deck[ random_card ];
+				deck.splice(random_card, 1);
+			}
+			hands.push( hand );
+		}
+		return hands;
+	}
+
+	function clearBoard()
+	{
+		let board = document.getElementById("board");
+		board.innerHTML = '';
+	}
+
+	function displayHands( hands, player )
+	{
+		if ( hands[ player ].length == 1 )
+		{
+			for ( let player_hand = 0; player_hand < hands.length; player_hand++ )
+			{
+				if ( player_hand != player )
+				{
+					displayHand( player_hand,
+						     hands[ player_hand ] );
+				}
+			}
+		}
+		else
+		{
+			displayHand( player,
+				     hands[ player ] );
+		}
+	}
+
+	function displayHand( player, hand )
+	{
+		let suit_names = ["oros", "copas", "espadas", "bastos"];
+		let board = document.getElementById("board");
+		let player_number = document.createElement("span");
+		player_number.setAttribute("class", "player_number");
+		player_number.innerHTML = "Jugador " + (player + 1);
+		board.appendChild( player_number );
+		for ( let i = 0; i < hand.length; i++ )
+		{
+			let card_image = document.createElement("img");
+			card_image.setAttribute("class","card");
+			card_image.src = "http://www.consultacartas.com/imagenes/baraja_espanola/" + suit_names[ hand[i][0] ] + "_" + (hand[i][1]+1) + ".jpg";
+			card_image.old_src = "https://i.pinimg.com/originals/10/80/a4/1080a4bd1a33cec92019fab5efb3995d.png";
+			card_image.onclick = hideCard;
+			board.appendChild( card_image );
+		}
+		let new_line = document.createElement("br");
+		board.appendChild( new_line );
+	}
+
+	function hideCard()
+	{
+		console.log("Pinchada una carta")
+		let temp_img = this.old_src;
+		this.old_src = this.src;
+		this.src = temp_img;
+	}
+
+	</script>
+</body>
+</html> 
