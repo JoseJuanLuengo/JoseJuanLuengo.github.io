@@ -26,8 +26,8 @@
 		<input type="number" id="number_of_players" name="number_of_players" min="1" value="4"><br>
 		<label for="player_number">¿Qué jugador eres?</label><br>
 		<input type="number" id="player_number" name="player_number" min="1" max="player_number" value="1"><br>
-		<label for="number_of_cards">¿Cuantas Cartas?</label><br>
-		<input type="number" id="number_of_cards" name="round" min="1" max="40/player_number" value="1"><br>
+		<label for="round">¿Ronda número?</label><br>
+		<input type="number" id="round" name="round" min="1" value="1"><br>
 		<input type="button" onclick="shuffleCards()" value="Reparte cartas">
 	</form>
 </div>
@@ -52,18 +52,19 @@
 		let game_params = document.getElementById("game_parameters");
 
 		let seed = game_params.elements[0].value;
-		Math.seedrandom( seed );
 		let number_of_players = game_params.elements[1].value;
-		let number_of_cards_per_hand =  game_params.elements[3].value;
+		let round =  game_params.elements[3].value - 1;
 		let player = game_params.elements[2].value - 1;
-		let deck = createDeck();
+
+		Math.seedrandom( seed+round );
+		let deck = createDeck( number_of_players );
 		let hands = distributeCards( deck,
-					     number_of_cards_per_hand,
-					     number_of_players );
+					     number_of_players,
+					     round );
 		displayHands( hands, player );
 	}
 
-	function createDeck()
+	function createDeck( number_of_players )
 	{
 		let card_number = 0;
 		let card_suit = 0;
@@ -79,7 +80,11 @@
 			else
 			{
 				card_number++;
-				if ( card_number == 7 )
+				if ( ( card_number == 1 ) && ( number_of_players%3 == 0 ) )
+				{
+					card_number++;
+				}
+				else if ( card_number == 7 )
 				{
 					// Skip 8 and 9
 					card_number = 9;
@@ -90,11 +95,15 @@
 	}
 
 	function distributeCards( deck,
-				  number_of_cards_per_hand,
-				  number_of_players )
+				  number_of_players,
+				  round
+				)
 	{
 		let hands = [];
 		let random_card = 0;
+		let number_of_cards_per_hand = number_of_cards_per_round( round,
+									  number_of_players,
+									  deck.length );
 		for ( let player = 0; player < number_of_players; player++ )
 		{
 			let hand = [];
@@ -164,6 +173,47 @@
 		this.src = temp_img;
 	}
 
+	function number_of_cards_per_round( round,
+					    number_of_players,
+					    deck_size )
+	{
+		// Initial ones
+		if ( round < number_of_players )
+		{
+			return 1;
+		}
+		// growing
+		let max_hand = deck_size/number_of_players;
+		let number_of_cards = round - number_of_players + 2 ;
+		
+		if ( round <= max_hand+1 )
+		{
+			return number_of_cards;
+		}
+		let max_
+
+		// Locas
+		if ( ( round > max_hand + 1 ) &&
+		     ( round <= max_hand + 1 + number_of_players ) )
+		{
+			return max_hand;
+		}
+
+		// Decreasing
+		if ( round > max_hand + 1 +  number_of_players )
+		{
+			number_of_cards = max_hand - ( round - max_hand - number_of_players - 1 );
+			if ( number_of_cards >= 1 )
+			{
+				return number_of_cards;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+	}
+
 	</script>
 </body>
-</html> 
+</html>
