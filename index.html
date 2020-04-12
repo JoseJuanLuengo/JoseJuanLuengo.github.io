@@ -8,6 +8,7 @@
 		.game {
 			display: none;
 			flex-direction: column;
+			justify-content: flex-start;
 			margin: 5px;
 		}
 		.v_container {
@@ -29,7 +30,6 @@
 			height=200px;
 		}
 	</style>
-	<title>Page Title</title>
 </head>
 <body>
 
@@ -264,23 +264,34 @@
 		player_number.setAttribute("class", "label");
 		player_number.innerHTML = "Jugador " + (player + 1);
 		player_hand.appendChild( player_number );
+		let cards = document.createElement("div");
+		player_hand.appendChild( cards );
 		for ( let i = 0; i < hand.length; i++ )
 		{
 			let card_image = document.createElement("img");
 			card_image.setAttribute("class","card");
 			card_image.src = "http://www.consultacartas.com/imagenes/baraja_espanola/" + suit_names[ hand[i][0] ] + "_" + (hand[i][1]+1) + ".jpg";
-			card_image.old_src = "https://i.pinimg.com/originals/10/80/a4/1080a4bd1a33cec92019fab5efb3995d.png";
+			card_image.old_src = "";
 			card_image.onclick = hideCard;
-			player_hand.appendChild( card_image );
+			cards.appendChild( card_image );
 		}
 		board.appendChild( player_hand );
 	}
 
 	function hideCard()
 	{
-		let temp_img = this.old_src;
-		this.old_src = this.src;
-		this.src = temp_img;
+		if (this.old_src=="")
+		{
+			let shown_card = window.open("","ChosenCard");
+			shown_card.document.write("<h1>Carta Elegida</h1><div><div><img src='"+this.src+"'/></div><input type='button' onclick='window.close()' value='Cierra'></div>");
+
+			this.old_src = this.src;
+			this.src = "https://i.pinimg.com/originals/10/80/a4/1080a4bd1a33cec92019fab5efb3995d.png";
+		}
+		else
+		{
+			  this.src = this.old_src;
+		}
 	}
 
 	function number_of_cards_per_round( round,
