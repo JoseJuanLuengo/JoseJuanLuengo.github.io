@@ -149,25 +149,18 @@
 		let card_number = 0;
 		let card_suit = 0;
 		let deck = [];
-		for ( let i = 1; i <= 40; i++ )
+		let skip_cards = [ 7, 8 ];
+		if ( number_of_players%3 == 0 )
 		{
-			deck.push([ card_suit, card_number ]);
-			if ( i % 10 == 0 )
+			skip_cards.push( 1 );
+		}
+		for ( let card_suit = 0; card_suit < 4; card_suit++)
+		{
+			for ( let card_number = 0; card_number < 12; card_number++ )
 			{
-				card_number = 0;
-				card_suit++;
-			}
-			else
-			{
-				card_number++;
-				if ( ( card_number == 1 ) && ( number_of_players%3 == 0 ) )
+				if ( !skip_cards.includes( card_number ) )
 				{
-					card_number++;
-				}
-				else if ( card_number == 7 )
-				{
-					// Skip 8 and 9
-					card_number = 9;
+					deck.push([ card_suit, card_number ]);
 				}
 			}
 		}
@@ -242,8 +235,6 @@
 			let card_image = document.createElement("img");
 			card_image.setAttribute("class","card");
 			card_image.src = "http://www.consultacartas.com/imagenes/baraja_espanola/" + suit_names[ random_card[0] ] + "_" + (random_card[1]+1) + ".jpg";
-			card_image.old_src = "https://i.pinimg.com/originals/10/80/a4/1080a4bd1a33cec92019fab5efb3995d.png";
-			card_image.onclick = hideCard;
 
 			suit.replaceChild( card_image, suit.childNodes[0] );
 
@@ -307,7 +298,7 @@
 		let max_hand = deck_size/number_of_players;
 		let number_of_cards = round - number_of_players + 2 ;
 		
-		if ( round <= max_hand + 1 )
+		if ( number_of_cards < max_hand )
 		{
 			return number_of_cards;
 		}
