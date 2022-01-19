@@ -5,12 +5,6 @@
 	<title>Pochinator</title>
 
 	<style>
-		.game {
-			display: none;
-			flex-direction: column;
-			justify-content: flex-start;
-			margin: 5px;
-		}
 		.v_container {
 			display: flex;
 			flex-direction: column;
@@ -29,295 +23,26 @@
 			width:100px;
 			height=200px;
 		}
+		a.button {
+			-webkit-appearance: button;
+			-moz-appearance: button;
+			appearance: button;
+
+			text-decoration: none;
+			color: initial;
+			}
+
 	</style>
 </head>
 <body>
 
-<h1>Repartidor de Pocha</h1>
+<h1>Proyectos</h1>
 
-<div>
-	<form id="game_parameters">
-		<label for="game_id">¿Identificador de la partida?</label><br>
-		<input type="text" id="game_id" name="game_id" value="Pochón de la muerte"><br>
-		<label for="number_of_players">¿Cuántos Jugadores?</label><br>
-		<input type="number" id="number_of_players" name="number_of_players" min="1" value="4" onchange="setPlayersOptions( this.value )"><br>
-		<label for="player_number">¿Qué jugador eres?</label><br>
-		<select id="player_number" name="player_number">
-		</select><br>
-		<label for="round">¿Ronda?</label><br>
-		<select id="round" name="round">
-		</select><br>
-		<input type="button" onclick="shuffleCards()" value="Reparte cartas">
-	</form>
-</div>
-<div class="game" id="game">
-	<div class="h_container">
-		<div class="v_container">
-			<div class="label">Mano</div>
-			<div id="king">1</div>
-		</div>
-		<div class="v_container" id="suit_info">
-			<div class="label">Pintan</div>
-			<div id="suit">lalalala</div>
-		</div>
-	</div>
-	<div class="v_container" id="board">
-	</div>
+<div class="v_container">
+	<a href="./Pochinator/pochinator.html" class="button">Pochinator</a>
+	<a href="./Card Clerk/index.html" class="button">Card Clerk</a>
 </div>
 
 
-	<script>
-		!function(f,a,c){var s,l=256,p="random",d=c.pow(l,6),g=c.pow(2,52),y=2*g,h=l-1;function n(n,t,r){function e(){for(var n=u.g(6),t=d,r=0;n<g;)n=(n+r)*l,t*=l,r=u.g(1);for(;y<=n;)n/=2,t/=2,r>>>=1;return(n+r)/t}var o=[],i=j(function n(t,r){var e,o=[],i=typeof t;if(r&&"object"==i)for(e in t)try{o.push(n(t[e],r-1))}catch(n){}return o.length?o:"string"==i?t:t+"\0"}((t=1==t?{entropy:!0}:t||{}).entropy?[n,S(a)]:null==n?function(){try{var n;return s&&(n=s.randomBytes)?n=n(l):(n=new Uint8Array(l),(f.crypto||f.msCrypto).getRandomValues(n)),S(n)}catch(n){var t=f.navigator,r=t&&t.plugins;return[+new Date,f,r,f.screen,S(a)]}}():n,3),o),u=new m(o);return e.int32=function(){return 0|u.g(4)},e.quick=function(){return u.g(4)/4294967296},e.double=e,j(S(u.S),a),(t.pass||r||function(n,t,r,e){return e&&(e.S&&v(e,u),n.state=function(){return v(u,{})}),r?(c[p]=n,t):n})(e,i,"global"in t?t.global:this==c,t.state)}function m(n){var t,r=n.length,u=this,e=0,o=u.i=u.j=0,i=u.S=[];for(r||(n=[r++]);e<l;)i[e]=e++;for(e=0;e<l;e++)i[e]=i[o=h&o+n[e%r]+(t=i[e])],i[o]=t;(u.g=function(n){for(var t,r=0,e=u.i,o=u.j,i=u.S;n--;)t=i[e=h&e+1],r=r*l+i[h&(i[e]=i[o=h&o+t])+(i[o]=t)];return u.i=e,u.j=o,r})(l)}function v(n,t){return t.i=n.i,t.j=n.j,t.S=n.S.slice(),t}function j(n,t){for(var r,e=n+"",o=0;o<e.length;)t[h&o]=h&(r^=19*t[h&o])+e.charCodeAt(o++);return S(t)}function S(n){return String.fromCharCode.apply(0,n)}if(j(c.random(),a),"object"==typeof module&&module.exports){module.exports=n;try{s=require("crypto")}catch(n){}}else"function"==typeof define&&define.amd?define(function(){return n}):c["seed"+p]=n}("undefined"!=typeof self?self:this,[],Math);
-	</script>
-	<script>
-		var suit_names = ["oros", "copas", "espadas", "bastos"];
-
-		let game_params = document.getElementById("game_parameters");
-		setPlayersOptions( game_params.elements[1].value );
-
-	function shuffleCards()
-	{
-		// Clean previous round
-		clearBoard();
-		document.getElementById("game").style.display = "flex";
-
-		let game_params = document.getElementById("game_parameters");
-
-		let seed = game_params.elements[0].value;
-		let number_of_players = game_params.elements[1].value;
-		let player = Number(game_params.elements[2].value);
-		let round =  Number(game_params.elements[3].value);
-
-		Math.seedrandom( seed + round );
-		let deck = createDeck( number_of_players );
-		let hands = distributeCards( deck,
-					     number_of_players,
-					     round );
-		displayKing( round,
-			     number_of_players );
-		displaySuit( deck );
-		displayHands( hands, player );
-	}
-
-	function createDeck( number_of_players )
-	{
-		let card_number = 0;
-		let card_suit = 0;
-		let deck = [];
-		let skip_cards = [ 7, 8 ];
-		if ( number_of_players%3 == 0 )
-		{
-			skip_cards.push( 1 );
-		}
-		for ( let card_suit = 0; card_suit < 4; card_suit++)
-		{
-			for ( let card_number = 0; card_number < 12; card_number++ )
-			{
-				if ( !skip_cards.includes( card_number ) )
-				{
-					deck.push([ card_suit, card_number ]);
-				}
-			}
-		}
-		return deck;
-	}
-
-	function distributeCards( deck,
-				  number_of_players,
-				  round )
-	{
-		let hands = [];
-		let random_card = 0;
-		let number_of_cards_per_hand = number_of_cards_per_round( round,
-									  number_of_players,
-									  deck.length );
-		console.log("deck " + deck.length + " players  " + number_of_players + " round " + round + " hand "+ number_of_cards_per_hand );
-		for ( let player = 0; player < number_of_players; player++ )
-		{
-			let hand = [];
-			for ( let card_number = 0; card_number < number_of_cards_per_hand; card_number++ )
-			{
-				random_card = Math.floor(Math.random()*deck.length);
-				hand[ card_number ] = deck[ random_card ];
-				deck.splice(random_card, 1);
-			}
-			hands.push( hand );
-		}
-		return hands;
-	}
-
-	function clearBoard()
-	{
-		let board = document.getElementById("board");
-		board.innerHTML = '';
-	}
-
-	function displayHands( hands, player )
-	{
-		if ( hands[ player ].length == 1 )
-		{
-			for ( let player_hand = 0; player_hand < hands.length; player_hand++ )
-			{
-				if ( player_hand != player )
-				{
-					displayHand( player_hand,
-						     hands[ player_hand ] );
-				}
-			}
-		}
-		else
-		{
-			displayHand( player,
-				     hands[ player ] );
-		}
-	}
-
-	function displayKing( round,
-			      number_of_players )
-	{
-		let king = document.getElementById("king");
-		king.innerHTML = (round%number_of_players)+1;
-	}
-
-	function displaySuit( deck )
-	{
-		let suit_block = document.getElementById("suit_info");
-		if ( deck.length > 0 )
-		{
-			let suit = document.getElementById("suit");
-
-			let random_card = deck[ Math.floor(Math.random()*deck.length) ];
-			let card_image = document.createElement("img");
-			card_image.setAttribute("class","card");
-			card_image.src = "http://www.consultacartas.com/imagenes/baraja_espanola/" + suit_names[ random_card[0] ] + "_" + (random_card[1]+1) + ".jpg";
-
-			suit.replaceChild( card_image, suit.childNodes[0] );
-
-			suit_block.style.display = "flex";
-		}
-		else
-		{
-			suit_block.style.display = "none";
-		}
-	}
-
-	function displayHand( player, hand )
-	{
-		let board = document.getElementById("board");
-		let player_hand = document.createElement("div");
-		player_hand.setAttribute("class","h_container");
-		let player_number = document.createElement("div");
-		player_number.setAttribute("class", "label");
-		player_number.innerHTML = "Jugador " + (player + 1);
-		player_hand.appendChild( player_number );
-		let cards = document.createElement("div");
-		player_hand.appendChild( cards );
-		for ( let i = 0; i < hand.length; i++ )
-		{
-			let card_image = document.createElement("img");
-			card_image.setAttribute("class","card");
-			card_image.src = "http://www.consultacartas.com/imagenes/baraja_espanola/" + suit_names[ hand[i][0] ] + "_" + (hand[i][1]+1) + ".jpg";
-			card_image.old_src = "";
-			card_image.onclick = hideCard;
-			cards.appendChild( card_image );
-		}
-		board.appendChild( player_hand );
-	}
-
-	function hideCard()
-	{
-		if (this.old_src=="")
-		{
-			let shown_card = window.open("","ChosenCard");
-			shown_card.document.write("<html><h1>Carta Elegida</h1><div><div><img src='"+this.src+"'/></div><input type='button' onclick='window.close()' value='Cierra'></div></html>");
-
-			this.old_src = this.src;
-			this.src = "https://i.pinimg.com/originals/10/80/a4/1080a4bd1a33cec92019fab5efb3995d.png";
-		}
-		else
-		{
-			  this.src = this.old_src;
-			  this.old_src = "";
-		}
-	}
-
-	function number_of_cards_per_round( round,
-					    number_of_players,
-					    deck_size )
-	{
-		// Initial ones
-		if ( round < number_of_players )
-		{
-			return 1;
-		}
-		// growing
-		let max_hand = deck_size/number_of_players;
-		let number_of_cards = round - number_of_players + 2 ;
-		
-		if ( number_of_cards < max_hand )
-		{
-			return number_of_cards;
-		}
-
-		return max_hand;
-	}
-
-	function setPlayersOptions( val )
-	{
-		// Player number
-		let player_number_options = document.getElementById("player_number");
-		player_number_options.innerHTML = '';
-		for( let i = 0; i < val; i++ )
-		{
-			let player_option = document.createElement("option");
-			player_option.innerHTML = i+1;
-			player_option.value = i;
-			player_number_options.appendChild( player_option );
-		}
-		// Rounds
-		let round = 0;
-		let round_options = document.getElementById("round");
-		round_options.innerHTML = '';
-		// Indias
-		for ( let i = 0; i < val; i++ )
-		{
-			let round_option = document.createElement("option");
-			round_option.innerHTML = "India " + (i+1);
-			round_option.value = round;
-			round_options.appendChild( round_option );
-			round++;
-		}
-		// Normales
-		let deck_size = (val%3==0)?36:40;
-		for( let i = 0; i < (deck_size/val)-2; i++ )
-		{
-			let round_option = document.createElement("option");
-			round_option.innerHTML = "Mano " + (i+1);
-			round_option.value = round;
-			round_options.appendChild( round_option );
-			round++;
-		}
-		// Locas
-		for ( let i = 0; i < val; i++ )
-		{
-			let round_option = document.createElement("option");
-			round_option.innerHTML = "Loca " + (i+1);
-			round_option.value = round;
-			round_options.appendChild( round_option );
-			round++;
-		}
-		// Oros / Copas / Espadas / Bastos
-		let names = [ "Oros", "Copas","Espadas","Bastos" ];
-		for ( let i = 0; i < 4; i++ )
-		{
-			let round_option = document.createElement("option");
-			round_option.innerHTML = names[i];
-			round_option.value = round;
-			round_options.appendChild( round_option );
-			round++;
-		}
-	}
-
-	</script>
 </body>
 </html>
