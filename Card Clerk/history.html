@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>Eldritch Horror Card Clerk</title>
+    <!-- stylesheets -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="css/1.18/custom.css">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <a href="index.html"><img src="eldritchhorror.png"></a>
+            <h1 class="title">Card Clerk</h1><sup><a href="history.html">v1.18</a></sup>
+        </div>
+    </div>
+    <div class="row" id="history">
+        <div class="col-md-12">
+            <div class="panel panel-default newGameForm">
+                <div class="panel-heading">Version history</div>
+                <div class="panel-body">
+                    <dt>1.18 : 2018-03-18</dt>
+                    <dd>Spells: Removed duplicate Cities in Ruins from spells (introduced in 1.17) as reported in <a href="https://boardgamegeek.com/article/28537925#28537925">this BGG post</a></dd>
+                    <dd>Spells: Added 2 missing Arcane insight cards as reported in <a href="https://boardgamegeek.com/article/28537925#28537925">this BGG post</a></dd>
+                    <dd>Assets: Updated due to issues reported in <a href="https://boardgamegeek.com/article/28537598#28537598">this BGG post</a></dd>
+                    <dd>Conditions: Updated due to issues reported in <a href="https://boardgamegeek.com/article/28537925#28537925">this BGG post</a></dd>
+                    <dd>Artifacts: Updated due to issues reported in <a href="https://boardgamegeek.com/article/28537925#28537925">this BGG post</a></dd>
+                    <dd>Unique Assets: Updated due to issues reported in <a href="https://boardgamegeek.com/article/28537925#28537925">this BGG post</a></dd>
+                    <dt>1.17 : 2018-03-12</dt>
+                    <dd>Added ugly font for card labels as a cache prevention test</dd>
+                    <dt>1.16 : 2018-03-12</dt>
+                    <dd>Added first attempt at cache prevention</dd>
+                    <dt>1.15 : 2018-03-09</dt>
+                    <dd>Added Masks of Nyarlathotep expansion icon</dd>
+                    <dt>1.14 : 2018-03-08</dt>
+                    <dd>Added Masks of Nyarlathotep expansion</dd>
+                    <dt>1.13 : 2017-07-18</dt>
+                    <dd>Added Cities in Ruin expansion icon</dd>
+                    <dt>1.12 : 2017-07-18</dt>
+                    <dd>Added Cities in Ruin expansion</dd>
+                    <dt>1.11 : 2017-02-26</dt>
+                    <dd>Fixed available expansions bug</dd>
+                    <dt>1.10 : 2017-02-26</dt>
+                    <dd>Added missing Blight condition (BANE)</dd>
+                    <dt>1.9 : 2017-02-19</dt>
+                    <dd>Added deck-unique id:s to all cards</dd>
+                    <dd>Fixed trait bugg where traits were ignored. Regression bug in 1.8</dd>
+                    <dd>Added switch for AND / OR usage with traits.</dd>
+                    <dt>1.8 : 2017-02-19</dt>
+                    <dd>Fixed trait bugg where traits selected from one deck affected another</dd>
+                    <dt>1.7 : 2017-02-19</dt>
+                    <dd>Added possibility to put played cards back in decks (and deck is then shuffled)</dd>
+                    <dd>Added missing shuffle on available cards at new game</dd>
+                    <dd>Fixed type on Debt-cards</dd>
+                    <dt>1.6 : 2017-02-19</dt>
+                    <dd>More crayons</dd>
+                    <dt>1.5 : 2017-02-18</dt>
+                    <dd>Renamed "Artefacts" to "Artifacts" and made sure old games with the old spelling are translated upon loading</dd>
+                    <dt>1.4 : 2017-02-18</dt>
+                    <dd>Fixed visual bug with drawn cards from stored game</dd>
+                    <dd>Went crazy with crayons for cards</dd>
+                    <dt>1.3 : 2017-02-18</dt>
+                    <dd>Formatting</dd>
+                    <dd>Google Analytics added</dd>
+                    <dt>1.2 : 2017-02-18</dt>
+                    <dd>Persistence added</dd>
+                    <dt>1.1 : 2017-02-18</dt>
+                    <dd>UX fixes</dd>
+                    <dt>1.0 : 2017-02-17</dt>
+                    <dd>Initial version added</dd>
+                    <dd>Assets deck added</dd>
+                    <dd>Conditions deck added</dd>
+                    <dd>Spells deck added</dd>
+                    <dd>Artifact deck added</dd>
+                    <dd>Unique Assets deck added</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<footer class="footer">
+    <div class="container">
+        <span class="text-muted credit"><a href="https://boardgamegeek.com/boardgame/146021/eldritch-horror">Eldritch Horror</a> is a tabletop board game published by <a
+                href="https://www.fantasyflightgames.com/en/products/eldritch-horror/">Fantasy Flight Games</a>, who owns all Copyright to the material.</span>
+    </div>
+</footer>
+
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-92185676-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+
+</body>
+</html>
