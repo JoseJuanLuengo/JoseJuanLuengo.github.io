@@ -1,7 +1,7 @@
 var eldritch = eldritch || {};
 eldritch.decks = eldritch.decks || [];
 
-var uniqueAssets = new Deck("Ressources Uniques", "2.0", [], [], [], [
+var uniqueAssets = new Deck("RessourcesUniques", "2.0", [], [], [], [
 
     {
         "name": "Les Contrées de L'Horreur",
